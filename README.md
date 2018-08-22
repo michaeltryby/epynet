@@ -12,28 +12,33 @@ EPYNET is an object oriented wrapper around the EPANET 2.1 community edition hyd
 - [x] Manipulation of valve and pump settings
 - [x] Manipulation of pipe, junction, reservoir and tank settings
 - [x] Support for time series
-- [ ] [TODO] Pattern and Curve creation and manipulation
+- [x] Pattern and Curve creation and manipulation
+- [x] Create and remove nodes and links
 - [ ] [TODO] Chemical calculations
 
 ## Example Usage
 ```python
 # load a network
 from epynet import Network
-network = new Network('network.inp')
+network = Network('network.inp')
 # solve network
 network.solve()
 # properties
-print network.pipes['4'].flow
-print network.nodes['1'].demand
+print(network.pipes['4'].flow)
+print(network.nodes['1'].demand)
 # valve manipulation
 network.valves['12'].setting = 10
 # convinience properties
-print network.pipes['5'].downstream_node.pressure
-print network.nodes['1'].upstream_links[0].velocity
+print(network.pipes['5'].downstream_node.pressure)
+print(network.nodes['1'].upstream_links[0].velocity)
 # pandas integration
-print network.pipes.flow
-print network.pipes.length[network.pipes.velocity > 1]
-print network.nodes.demand[network.nodes.pressure < 10].max()
+print(network.pipes.flow)
+print(network.pipes.length[network.pipes.velocity > 1])
+print(network.nodes.demand[network.nodes.pressure < 10].max())
+# network manipulaton
+network.add_tank('tankid', x=10, y=10, elevation=10)
+network.add_junction('junctionid', x=20, y=10, elevation=5)
+network.add_pipe('tankid', 'junctionid', length=10, diameter=200, roughness=0.1)
 ```
 
 ## Installation
@@ -41,13 +46,13 @@ print network.nodes.demand[network.nodes.pressure < 10].max()
 * ```python setup.py install```
 
 ## Requirements
-* 64 bit Python 2.7
+* 64 bit Python 2.7 or 3
 * Windows, OSX or Linux
 
 ## Unit Tests
 | **Mac/Linux** | **Windows** |
 |---|---|
-| [![Build Status](https://travis-ci.org/VitensTC/epynet.svg?branch=master)](https://travis-ci.org/VitensTC/epynet) | [![Build status](https://ci.appveyor.com/api/projects/status/ewa92p50rw5u0yfd?svg=true)](https://ci.appveyor.com/project/AbelHeinsbroek/epynet) |
+| [![Build Status](https://travis-ci.org/Vitens/epynet.svg?branch=master)](https://travis-ci.org/Vitens/epynet) | [![Build status](https://ci.appveyor.com/api/projects/status/ewa92p50rw5u0yfd?svg=true)](https://ci.appveyor.com/project/AbelHeinsbroek/epynet) |
 
 ## Acknowledgements
 This project makes use of the [EPANET 2.1](https://github.com/OpenWaterAnalytics/EPANET) community version and is (partly) derived from the [epanettools](https://github.com/asselapathirana/epanettools) package (Assela Pathirana) and the [epanet-python](https://github.com/OpenWaterAnalytics/epanet-python) library (Maurizio Cingi)
